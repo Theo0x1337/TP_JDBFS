@@ -44,7 +44,12 @@ public class DiscreteActionOnOffDependent implements DiscreteActionInterface {
 		this.currentAction = this.offAction;
 		this.currentLapsTime = 0;
 	}
-	
+	/**
+	 * @param datesOn
+	 * @param datesOff
+	 * @param timeLapseOn
+	 * @param timeLapseOff
+	 */
 	private void dates2Timalapse(TreeSet<Integer> datesOn, TreeSet<Integer> datesOff, Vector<Integer> timeLapseOn, Vector<Integer> timeLapseOff) {
 		Vector<Integer> currentTimeLapse;
 		TreeSet<Integer> currentDates;
@@ -76,7 +81,14 @@ public class DiscreteActionOnOffDependent implements DiscreteActionInterface {
 		}
 		
 	}
-	
+	/**
+	 * Allows an action to be switched on and off
+	 * @param o
+	 * @param on
+	 * @param datesOn
+	 * @param off
+	 * @param datesOff
+	 */
 	public DiscreteActionOnOffDependent(Object o, String on, TreeSet<Integer> datesOn, String off, TreeSet<Integer> datesOff){
 		/*Vector<Integer> timeLapseOn = new Vector<Integer>();
 		Vector<Integer> timeLapseOff = new Vector<Integer>();
@@ -94,7 +106,9 @@ public class DiscreteActionOnOffDependent implements DiscreteActionInterface {
 			this.currentAction = this.offAction;
 		}
 	}
-
+	/**
+	 * Goes to the next action by retrieving the various timers
+	 */
 	public void nextAction(){
 		if (this.currentAction == this.onAction){
 			this.currentAction = this.offAction;
@@ -106,32 +120,52 @@ public class DiscreteActionOnOffDependent implements DiscreteActionInterface {
 			this.currentAction.spendTime(this.lastOffDelay);
 		}
 	}
-
+	/**
+	 * decrease the time of discrete action 
+	 * @param t
+	 */
 	public	void spendTime(int t) {
 		this.currentAction.spendTime(t);
 	}
-
+	/*
+	 * return the method to execute
+	 */
 	public Method getMethod() {
 		return this.currentAction.getMethod();
 	}
-
+	/*
+	 * return the last laps time without update
+	 */
 	public Integer getCurrentLapsTime() {
 		return this.currentAction.getCurrentLapsTime();
 	}
-
+	/*
+	 * get the object on which the method must be invoked
+	 */
 	public Object getObject() {
 		return this.currentAction.getObject();
 	}
-
+	/**
+	 * compare discrete action according to the time before execution
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
+	 */
 	public int compareTo(DiscreteActionInterface c) {
 		return this.currentAction.compareTo(c);
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
 	public DiscreteActionInterface next() {
 		this.nextAction();
 		return this;
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
 	public boolean hasNext() {
 		return this.onAction.hasNext() || this.offAction.hasNext();		
 	}

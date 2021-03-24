@@ -33,6 +33,12 @@ public class DiscreteActionDependent implements DiscreteActionInterface {
 		this.currentAction = this.baseAction;
 	}
 	
+	/**
+	 * Adds a dependent action
+	 * @param o
+	 * @param depentMethodName
+	 * @param timerDependence
+	 */
 	public void addDependence(Object o, String depentMethodName, Timer timerDependence) {
 		this.depedentActions.add(new DiscreteAction(o, depentMethodName, timerDependence));
 	}
@@ -92,7 +98,9 @@ public class DiscreteActionDependent implements DiscreteActionInterface {
 		    //element.updateTimeLaps();
 		}		
 	}
-	
+	/**
+	 * allows you to use the following action 
+	 */
 	public void nextMethod(){
 		if (this.currentAction == this.baseAction){
 			this.it = this.depedentActions.iterator();
@@ -105,46 +113,73 @@ public class DiscreteActionDependent implements DiscreteActionInterface {
 		}
 	}
 	
+	/**
+	 * decrease the time of discrete action 
+	 * @param t
+	 */
 	public void spendTime(int t) {
 		for (Iterator<DiscreteAction> iter = this.depedentActions.iterator(); iter.hasNext(); ) {
 		    DiscreteAction element = iter.next();
 		    element.spendTime(t);
 		}
 	}
-
+	/**
+	 * time laps is updated at the re-initialization
+	 */
 	public void updateTimeLaps() {
 		// time laps is updated at the re-initialization
 		//this.currentAction.updateTimeLaps();	
 		this.nextMethod();	
 	}
-
+	/*
+	 * return the method to execute
+	 */
 	public Method getMethod() {
 		return this.currentAction.getMethod();
 	}
-
+	/*
+	 * return the last laps time without update
+	 */
 	public Integer getCurrentLapsTime() {
 		return this.currentAction.getCurrentLapsTime();
 	}
-
+	/*
+	 * get the object on which the method must be invoked
+	 */
 	public Object getObject() {
 		return this.currentAction.getObject();
 	}
-
+	
+	/**
+	 * compare discrete action according to the time before execution
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
+	 */
 	public int compareTo(DiscreteActionInterface c) {
 		return this.currentAction.compareTo(c);
 	}
-
+	/**
+	 * allows you to know if there are other actions to be carried out
+	 * @return
+	 */
 	public Boolean isEmpty() {
 		return !this.hasNext();
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
 	public DiscreteActionInterface next() {
 		//Integer lapsTime = this.getNextLapsTime();
 		Method method = this.getMethod();
 		Object object = this.getObject();
 		return this;
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
 	public boolean hasNext() {
 		return this.baseAction.hasNext() || !this.depedentActions.isEmpty();		
 	}

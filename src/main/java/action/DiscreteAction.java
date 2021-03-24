@@ -52,7 +52,13 @@ public class DiscreteAction implements DiscreteActionInterface {
 			this.logger.addHandler(logFile);
 			this.logger.addHandler(logConsole);*/
 	}
-	
+	/**
+	 * allows access to the object on which the action will be performed, the method to be applied to the object and the waiting time before applying the method
+	 * @param o
+	 * @param m
+	 * @param timer
+	 * @exception e
+	 */
 	public DiscreteAction(Object o, String m, Timer timmer){
 		this();
 		this.object = o;
@@ -67,7 +73,10 @@ public class DiscreteAction implements DiscreteActionInterface {
 	}
 	
 	// ATTRIBUTION
-
+	/**
+	 * decrease the time of discrete action 
+	 * @param t
+	 */
 	public void spendTime(int t) {
 		Integer old = this.lapsTime;
 		if(this.lapsTime != null) {
@@ -78,13 +87,21 @@ public class DiscreteAction implements DiscreteActionInterface {
 	}
 
 	// RECUPERATION
-
+	/*
+	 * return the method to execute
+	 */
 	public Method getMethod(){
 		return method;
 	}
+	/*
+	 * return the last laps time without update
+	 */
 	public Integer getCurrentLapsTime(){
 		return lapsTime;
 	}
+	/*
+	 * get the object on which the method must be invoked
+	 */
 	public Object getObject(){
 		return object;
 	}
@@ -92,6 +109,12 @@ public class DiscreteAction implements DiscreteActionInterface {
 
 
 	// COMPARAISON
+	/**
+	 * compare discrete action according to the time before execution
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
+	 */
 	public int compareTo(DiscreteActionInterface c) {
 		if (this.lapsTime == null) { // no lapstime is equivalent to infinity 
 			return 1;
@@ -110,12 +133,18 @@ public class DiscreteAction implements DiscreteActionInterface {
 		}
 		return 0;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		return "Object : " + this.object.getClass().getName() + "\n Method : " + this.method.getName()+"\n Stat. : "+ this.timmer + "\n delay: " + this.lapsTime;
 
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
 	public DiscreteActionInterface next() {
 		Integer old = this.lapsTime;
 		this.lapsTime = this.timmer.next();
@@ -123,7 +152,11 @@ public class DiscreteAction implements DiscreteActionInterface {
 		//System.out.println("[DA] operate 'next' on " + this.getObject().getClass().getName() + ":" + this.getObject().hashCode() + ": old time " + old + " new time " + this.getCurrentLapsTime() + "\n");
 		return this;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
 	public boolean hasNext() {
 		Boolean more=false;
 		if (this.timmer != null && this.timmer.hasNext()) {

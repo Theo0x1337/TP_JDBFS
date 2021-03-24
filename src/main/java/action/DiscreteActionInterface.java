@@ -8,8 +8,9 @@ import java.util.Iterator;
  */
 public interface DiscreteActionInterface extends Comparable<DiscreteActionInterface>, Iterator<DiscreteActionInterface>{
 
-	/*
+	/**
 	 * decrease the time of discrete action 
+	 * @param t
 	 */
 	public	void spendTime(int t);
 	
@@ -29,14 +30,15 @@ public interface DiscreteActionInterface extends Comparable<DiscreteActionInterf
 	public Object getObject();
 
 	// COMPARAISON
-	/*
+	/**
 	 * compare discrete action according to the time before execution
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
 	 */
 	public int compareTo(DiscreteActionInterface c);
 	
-	/*
+	/* 
 	 * (non-Javadoc)
 	 * @see java.util.Iterator#next()
 	 */
