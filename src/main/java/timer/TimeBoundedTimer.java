@@ -45,7 +45,7 @@ public class TimeBoundedTimer implements Timer {
 	 * It will be equal to the sum of the first times of the Timer
 	 * until a time is greater than the start time
 	 */
-	private void init() {
+	void init() {
 		this.next = this.timer2bound.next();
 		while (this.next < this.startTime) {
 			this.next += this.timer2bound.next();
@@ -84,5 +84,23 @@ public class TimeBoundedTimer implements Timer {
 		}
 		return next;
 	}
+
+	public Timer getTimer2bound() {
+		return timer2bound;
+	}
+
+	public Integer getStartTime() {
+		return startTime;
+	}
+
+	public Integer getStopTime() {
+		return stopTime;
+	}
+
+	public int getTime() {
+		return time;
+	}
+	
+	
 
 }

@@ -23,11 +23,7 @@ class DateTimerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 			vecteur = new Vector<Integer>(1);
-			
-			
-	        
-	        
-	        
+			     
 	        dates = new TreeSet<Integer>();
 	        dates.add(10);
 	        dates.add(20);
