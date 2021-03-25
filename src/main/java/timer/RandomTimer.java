@@ -8,8 +8,6 @@ import java.util.Vector;
  *
  */
 
-
-
 public class RandomTimer implements Timer {
 	
 	//enumeration of possible distribution laws
