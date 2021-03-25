@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 /**
- * Classe DateTimer representant l'interval de temps entre plusieurs dates
+ * DateTimer class representing the time interval between several dates
  *
  */
 public class DateTimer  implements Timer {
@@ -15,9 +15,9 @@ public class DateTimer  implements Timer {
 	
 	
 	/**
-	 * Constructeur de la classe DateTimer prenant un TreeSet en parametre
+	 * Constructor of the DateTimer class taking a TreeSet as parameter
 	 * @param date 
-	 * 				ensemble de dates (TreeSet) dont on va calculer l'interval entre chaque dates et les ajouter a un iterateur
+	 * set of dates (TreeSet) which we will calculate the interval between each date and add them to an iterator
 	 */
 	public DateTimer(TreeSet<Integer> dates) {
 		this.lapsTimes = new Vector<Integer>();
@@ -36,9 +36,9 @@ public class DateTimer  implements Timer {
 	
 	
 	/**
-	 * Construsteur de la classe DateTimer prenant un Vecteur en parametre
+	 * Constructor of the DateTimer class taking a Vector as parameter
 	 * @param lapsTimes
-	 * 					vecteur contenant les intervals de temps entre les différentes dates
+	 * vector containing the time intervals between the different dates
 	 */
 	public DateTimer(Vector<Integer> lapsTimes) {
 		this.lapsTimes = new Vector<Integer>(lapsTimes);
@@ -47,7 +47,7 @@ public class DateTimer  implements Timer {
 
 	@Override
 	/**
-	 * Methode surchargée pour savoir si l'itérateur a un element suivant 
+	 * Overloaded method to know if the iterator has a next element 
 	 */
 	public boolean hasNext() {
 		return it.hasNext();
@@ -55,7 +55,7 @@ public class DateTimer  implements Timer {
 
 	@Override
 	/**
-	 * Methode surchargée pour recuperer le prochain element de l'iterateur
+	 * Overloaded method to get the next element of the iterator
 	 */
 	public Integer next() {
 		return it.next();

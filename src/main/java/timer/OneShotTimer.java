@@ -1,20 +1,21 @@
 package timer;
-
 /**
- * Classe OneShotTimer reprensentant un timer ne s'executant qu'une fois
+ * OneShotTimer class that resumes a timer that executes only once
  *
  */
 public class OneShotTimer  implements Timer {
 	
-	//attribut de type entier reprensentant le moment ou le timer s'execute
+
+	//attribute of type integer representing the moment when the timer is executed
 	private Integer at;
-	//attribut boolean permettant de savoir si le timer aura un prochain evenement
+	//attribute of type integer representing the moment when the timer is executed
 	private boolean hasNext;
 	
 	
 	/**
-	 * Constructeur de la classe OneShotTimer prenant un entier en parametre qui represente l'instant t ou le timer vas s'executer
+	 * Constructor of the OneShotTimer class taking an integer in parameter which represents the instant t where the timer will be executed
 	 * @param at
+	 * type integer representing the moment when the timer is executed
 	 */
 	public OneShotTimer(int at) {
 		this.at = at;
@@ -22,7 +23,7 @@ public class OneShotTimer  implements Timer {
 	}
 
 	/**
-	 * Surcharge de la methode hasNext() pour savoir si l'instance actuelle à un prochain element 
+	 * Overload the hasNext() method to know if the current instance has a next element 
 	 */
 	@Override
 	public boolean hasNext() {
@@ -32,7 +33,7 @@ public class OneShotTimer  implements Timer {
 	
 	
 	/**
-	 * Surcharge de la methode next(), return le moment ou le oneShotTimer s'execute et specifie qu'il n'y a plus d'autres evenements apres lui
+	 * Overload the next() method, return the moment when the oneShotTimer executes and specify that there are no more events after it
 	 */
 	@Override
 	public Integer next() {

@@ -6,18 +6,18 @@ package timer;
  */
 public class PeriodicTimer implements Timer {
 
-	//attribut entier representant la periode entre deux tick de timer
+	//Integer attribute representing the period between two timer ticks
 	private int period;
-	//Atribut entier representant le moment ou le prochain tick de timer va avoir lieux
+	//Integer attribute representing the time when the next timer tick will occur
 	private int next;
-	//Attribut de type RandomTimer qui va generer des tick de timer de facon aleatoire seloin une loi de distribution
+	//Attribute of type RandomTimer which will generate timer ticks randomly according to a distribution law
 	private RandomTimer moreOrLess = null;
 	
 	
 	/**
-	 * Constructeur de la classe PeriodicTimer prenant une periode de temps en parametre
+	 * Constructor of the PeriodicTimer class taking a time period as parameter
 	 * @param at
-	 * 			periode de temps entre deux declenchement de l'objet de type PeriodicTimer
+	 * period of time between two triggers of the PeriodicTimer object
 	 */
 	public PeriodicTimer(int at) {
 		this.period = at;
@@ -25,11 +25,11 @@ public class PeriodicTimer implements Timer {
 	}
 	
 	/**
-	 * Constructeur de la classe PeriodicTimer prenant une periode et un objet RandomTimer en parametre
+	 * Constructor of the PeriodicTimer class taking a period and a RandomTimer object as parameters
 	 * @param at
-	 * 			periode de temps entre deux declenchement de l'objet de type PeriodicTimer
+	 * period of time between two triggers of the PeriodicTimer object
 	 * @param moreOrLess
-	 * 			RandomTimer permettant de simuler le prochain declanchement du PeriodicTimer
+	 * RandomTimer allowing to simulate the next triggering of the PeriodicTimer
 	 * 
 	 * use MergedTimer instead
 	 */
@@ -42,11 +42,11 @@ public class PeriodicTimer implements Timer {
 	
 	
 	/**
-	 * Constructeur de la classe PeriodicTimer prenant en parametre une periode et autre entier representant le prochain déclenchement du PeriodicTimer
+	 * Constructor of the PeriodicTimer class taking as parameters a period and another integer representing the next trigger of the PeriodicTimer
 	 * @param period
-	 * 			la periode de temps entre deux declanchement du PeriodicTimer
+	 * the period of time between two triggers of the PeriodicTimer
 	 * @param at
-	 * 			le moment du prochain declanchement du PeriodicTimer
+	 * the time of the next triggering of the PeriodicTimer
 	 */
 	public PeriodicTimer(int period, int at) {
 		this.period = period;
@@ -54,13 +54,13 @@ public class PeriodicTimer implements Timer {
 	}
 	
 	/**
-	 * Constructeur de la classe PeriodicTimer prenant une periode et un objet RandomTimer en parametre
+	 * Constructor of the PeriodicTimer class taking a period and a RandomTimer object as parameters
 	 * @param period
-	 *   		la periode de temps entre deux declanchement du timer
+	 * the period of time between two timer triggers
 	 * @param at
-	 * 			le moment du prochain declanchement du PeriodicTimer
+	 * the time of the next triggering of the PeriodicTimer
 	 * @param moreOrLess
-	 * 			RandomTimer permettant de simuler le prochain declanchement du PeriodicTimer
+	 * RandomTimer to simulate the next PeriodicTimer triggering
 	 * 
 	 * use MergedTimer instead
 	 */
@@ -73,8 +73,8 @@ public class PeriodicTimer implements Timer {
 	
 	
 	/**
-	 * Getter de l'attribut period
-	 * @return Un entier qui correspond a la periode entre deux declanchement de l'instance de PeriodicTimer 
+	 * Getter of the period attribute
+	 * @return An integer that corresponds to the period between two triggering of the PeriodicTimer instance 
 	 */
 	public int getPeriod() {
 		return this.period;
@@ -82,7 +82,7 @@ public class PeriodicTimer implements Timer {
 	
 	
 	/**
-	 * Surcharge de la methode next
+	 * Overloading the next method
 	 */
 	@Override
 	public Integer next() {
@@ -114,7 +114,7 @@ public class PeriodicTimer implements Timer {
 	}*/
 
 	/**
-	 * Surcharge de la methode hasNext
+	 * Overloading the hasNext method
 	 */
 	@Override
 	public boolean hasNext() {

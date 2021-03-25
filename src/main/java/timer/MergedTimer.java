@@ -2,14 +2,14 @@ package timer;
 
 /**
  * 
- *Classe MergedTimer permettant de fusionenr deux timer
+ *MergedTimer class allowing to merge two timers
  */
 
 public class MergedTimer implements Timer{
 	
-	//attribut de type Timer representant le premier timer a fusionner
+	//attribute of type Timer representing the first timer to merge
 	private Timer timer1;
-	//attribut de type Timer representant le deuxieme timer a fusionner
+	//Timer attribute representing the second timer to merge
 	private Timer timer2;
 	
 	
@@ -27,7 +27,7 @@ public class MergedTimer implements Timer{
 	
 	
 	/**
-	 * Methode surchargee pour savoir si les deux timers on un element suivant
+	 * Overloaded method to know if the two timers have a next element
 	 */
 	@Override
 	public boolean hasNext() {
@@ -36,7 +36,7 @@ public class MergedTimer implements Timer{
 
 	
 	/**
-	 * Methode surchargee, si l'instance de la classe MergedTimer a un element suivant, alors cela return la somme des deux timers a fusionner
+	 * Overloaded method, if the instance of the MergedTimer class has a next element, then it returns the sum of the two timers to merge
 	 */
 	@Override
 	public Integer next() {

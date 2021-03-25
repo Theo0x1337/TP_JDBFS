@@ -7,11 +7,16 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
+ * This class was created to set the format of the logs
  * @author Flavien Vernier
  *
  */
 public class LogFormatter  extends Formatter {
 	
+	/**
+	 * @return the proper format of a log record
+	 * @param rec A log record
+	 */
 	public String format(LogRecord rec) {
 		StringBuffer buf = new StringBuffer();
 		
@@ -25,6 +30,11 @@ public class LogFormatter  extends Formatter {
 		return buf.toString();
 	}
 	
+	/**
+	 * 
+	 * @param millisecs a long type number of milliseconds
+	 * @return the converted milliseconds into a date format
+	 */
 	private String calcDate(long millisecs) {
 	    SimpleDateFormat date_format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SS");
 	    Date resultdate = new Date(millisecs);

@@ -12,33 +12,33 @@ import java.util.Vector;
 
 public class RandomTimer implements Timer {
 	
-	//enumeration contenant les loi de distribution possible
+	//enumeration of possible distribution laws
 	public static enum randomDistribution {
 		POISSON, EXP, POSIBILIST, GAUSSIAN;
 	}
 	
 	//private static String randomDistributionString[] = {"POISSON", "EXP", "POSIBILIST", "GAUSSIAN"};
 	
-	//attribut contenant un nombre aleatoire
+	//attribute containing a random number
 	private Random r = new Random();
-	//attribut contenant le type de distribution choisie de maniere aleatoire
+	//attribute containing the type of distribution chosen randomly
 	private randomDistribution distribution;
-	//attribut representant le rate pour la loi exp
+	//attribute representing the rate for the exp law
 	private double rate;
 	//attribut representant la moyenne pour la loi de poisson
 	private double mean;
-	//attribut representant la limite basse pour la loi gausienne ou probabiliste
+	//attribute representing the mean for the fish law
 	private double lolim;
-	//attribut representant la limite haute pour la loi gausienne ou probabiliste
+	//attribute representing the upper limit for the Gaussian or probabilistic law
 	private double hilim; 
 	//private int width; 
 	
 	
 	/**
-	 * Methode permettant de simuler de facon aleatoire un type de distribution parmis les lois de poisson, exp, gaussienne et posibiliste pour le declanchement d'un timer
+	 * Method for randomly simulating a type of distribution among the fish, exp, gaussian and posibilistic distributions for the triggering of a timer
 	 * @param distributionName
-	 * 			nom de la distribution qui va etre choisie de facon aleatoire
-	 * @return un objet randomDistribution avec une loi de distribution choisie aleatoirement
+	 * name of the distribution that will be randomly chosen
+	 * @return a randomDistribution object with a randomly chosen distribution law
 	 */
 	public static randomDistribution string2Distribution(String distributionName){
 		return RandomTimer.randomDistribution.valueOf(RandomTimer.randomDistribution.class, distributionName.toUpperCase());
@@ -54,12 +54,9 @@ public class RandomTimer implements Timer {
 	}
 	
 	/**
-	 * Cosntructeur de la classe pecifiant les calculs a realiser selon les lois de distribution (poisson et exp)
+	 * Get the name of the distribution law stored in the distribution attribute
 	 * @param distribution
-	 * 				le type de distribution associee a l'instance RandomTimer
-	 * @param param
-	 * 				parametre de type double utilise pour les calculs des lois de poissons et exp
-	 * @throws Exception 
+	 * @return a string corresponding to the name of the distribution law of the timer
 	 */
 	public RandomTimer(randomDistribution distribution, double param) throws Exception{
 		if(distribution == randomDistribution.EXP ){
@@ -80,13 +77,13 @@ public class RandomTimer implements Timer {
 	}
 	
 	/**
-	 * Cosntructeur de la classe pecifiant les calculs a realiser selon la loi de distribution probabiliste ou gaussienne
+	 * Cosntructor of the class specifying the calculations to be performed according to the probabilistic or Gaussian distribution law
 	 * @param distribution
-	 * 				le type de distribution
+	 * the type of distribution
 	 * @param lolim
-	 * 				limite basse du model
+	 * lower limit of the model
 	 * @param hilim
-	 * 				limite haute du model
+	 * upper limit of the model
 	 * @throws Exception
 	 */
 	public RandomTimer(randomDistribution distribution, int lolim, int hilim) throws Exception{
@@ -103,8 +100,8 @@ public class RandomTimer implements Timer {
 	
 	
 	/**
-	 * Getter de l'attribut distribution
-	 * @return le nom du type de distribution utilise par l'instance
+	 * Getter of the distribution attribute
+	 * @return the name of the distribution type used by the instance
 	 */
 	public String getDistribution(){
 		return this.distribution.name();
@@ -112,8 +109,8 @@ public class RandomTimer implements Timer {
 	
 	
 	/**
-	 * Methode permettant d'obtenir les differents parametres selon les loi de distribution
-	 * @return les parametres des loi de distribution ou null si aucun ne correspond
+	 * Method to obtain the different parameters according to the distribution law
+	 * @return the parameters of the distribution law or null if none match
 	 */
 	public String getDistributionParam() {
 		if(distribution == randomDistribution.EXP ){
@@ -134,9 +131,8 @@ public class RandomTimer implements Timer {
 		return this.mean;
 	}
 	
-	/**
-	 * Methode toString permettant un affichage des objets de type RandomTimer
-	 * @return une chaine de caractere specifiant les informations sur l'objet d'instance RandomTimer
+	/*
+	 * Getter allowing to obtain the average of the distribution by returning the attribute mean
 	 */
 	public String toString(){
 		String s = this.getDistribution();
@@ -190,7 +186,7 @@ public class RandomTimer implements Timer {
 	}*/
 	
 	/*
-	 * Prochain temps selon la distribution de la loi probabiliste
+	 * Next time according to the distribution of the probabilistic law
 	 */
 	private int nextTimePosibilist(){
 	    return (int)this.lolim + (int)(this.r.nextDouble() * (this.hilim - this.lolim));
@@ -205,7 +201,7 @@ public class RandomTimer implements Timer {
 	
 	
 	/*
-	 * Prochain temps selon la distribution de la loi de poisson
+	 * Next time according to the distribution of the law exp
 	 */
 	private int nextTimePoisson() {
 	    
@@ -220,7 +216,7 @@ public class RandomTimer implements Timer {
 	}   		
 	    
 	/*
-	 * methode qui renvoi le prochain tick de timer selon la distribution gaussienne
+	 * method that returns the next timer tick according to the gaussian distribution
 	 */
 	private int nextTimeGaussian(){
 		return (int)this.lolim + (int)((this.r.nextGaussian() + 1.0)/2.0 * (this.hilim - this.lolim));
@@ -228,7 +224,7 @@ public class RandomTimer implements Timer {
 	
 	
 	/**
-	 * Surcharge de la methode hasNext
+	 * Overloading the hasNext method
 	 */
 	@Override
 	public boolean hasNext() {
