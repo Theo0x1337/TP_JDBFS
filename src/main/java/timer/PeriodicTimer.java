@@ -121,4 +121,12 @@ public class PeriodicTimer implements Timer {
 		return true;
 	}
 
+	public int getNext() {
+		return next;
+	}
+
+	public RandomTimer getMoreOrLess() {
+		return moreOrLess;
+	}
+
 }
