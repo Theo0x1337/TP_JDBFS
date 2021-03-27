@@ -38,6 +38,7 @@ class PeriodicTimerTest {
 		RandomTimer rt = new RandomTimer(rd, param);
 		PeriodicTimer pt = new PeriodicTimer(at, rt);
 		assertNotNull(pt);
+		assertEquals(at, pt.getPeriod());
 		
 	}
 
@@ -50,8 +51,13 @@ class PeriodicTimerTest {
 	}
 
 	@Test
-	void testPeriodicTimerIntIntRandomTimer() {
-		fail("Not yet implemented");
+	void testPeriodicTimerIntIntRandomTimer() throws Exception {
+		String dist = "EXP";
+		rd = moreOrLess.string2Distribution(dist);
+		RandomTimer rt = new RandomTimer(rd, param);
+		PeriodicTimer pt = new PeriodicTimer(period, at, rt);
+		assertNotNull(pt);
+		assertEquals(period, pt.getPeriod());
 	}
 
 	@Test
