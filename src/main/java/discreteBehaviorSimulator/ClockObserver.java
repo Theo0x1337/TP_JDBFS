@@ -5,6 +5,7 @@ package discreteBehaviorSimulator;
  *
  */
 public interface ClockObserver {
+	
 	/**
 	 * Each time the global time is updated, this method is called
 	 * @param time
@@ -13,7 +14,19 @@ public interface ClockObserver {
 	
 	/**
 	 * Each time the jump time is updated, this method is called
-	 * @param time
+	 * @param nextJump
 	 */
 	public void nextClockChange(int nextJump);
+	
+	/**
+	 * To know if the method is successfully called
+	 * @return true or false
+	 */
+	public boolean isNextClockChangeCalled();
+	
+	/**
+	 * To know if the method is successfully called
+	 * @return true or false
+	 */
+	public boolean isClockChangeCalled();
 }

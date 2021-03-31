@@ -63,6 +63,14 @@ public class Clock {
 		this.observers.remove(o);
 	}
 	
+	public Set<ClockObserver> getObservers() {
+		return observers;
+	}
+
+	public int getNextJump() {
+		return nextJump;
+	}
+
 	/**
 	 * Sets the clock virtual or not
 	 * @param virtual true or false
@@ -87,7 +95,7 @@ public class Clock {
 		this.nextJump = nextJump;
 		for(ClockObserver o:this.observers) {
 			o.nextClockChange(this.nextJump);
-		}
+		}		
 	}
 	/*public void setTime(int time) throws IllegalAccessException {
 		this.lock.lock();
@@ -135,6 +143,10 @@ public class Clock {
 		}
 	}
 	
+	public void setTime(int time) {
+		this.time = time;
+	}
+
 	public void lockReadAccess() {
 		this.lock.readLock().lock();
 	}

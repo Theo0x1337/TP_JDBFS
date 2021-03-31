@@ -81,6 +81,30 @@ public class DiscreteActionSimulator implements Runnable {
 	}
 	
 	/**
+	 * Getter for nbLoop
+	 * @return nbLoop
+	 */
+	public int getNbLoop() {
+		return nbLoop;
+	}
+	
+	/**
+	 * Getter for step
+	 * @return step
+	 */
+	public int getStep() {
+		return step;
+	}
+	
+	/**
+	 * Getter for actionList
+	 * @return actionList
+	 */
+	public Vector<DiscreteActionInterface> getActionsList() {
+		return actionsList;
+	}
+
+	/**
 	 * Adds an action to the list and reorders it.
 	 * @param c the action interface
 	 */
