@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteActionTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">action</a> &gt; <span class="el_source">DiscreteActionTest.java</span></div><h1>DiscreteActionTest.java</h1><pre class="source lang-java linenums">package action;
+
+import org.junit.jupiter.api.Test;
+import timer.OneShotTimer;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * @author Beda Igiraneza
+ *
+ */
+
+<span class="fc" id="L13">class DiscreteActionTest {</span>
+
+	@Test
+	void spendTime() {
+		Object object = new Object();
+		OneShotTimer oneShotTimer = new OneShotTimer(5);
+		DiscreteAction discreteAction = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);
+<span class="fc" id="L20">		discreteAction.setLapsTime(5);</span>
+		discreteAction.spendTime(2);
+		Integer integer = 3;
+		assertEquals(integer, discreteAction.getCurrentLapsTime());
+	}
+
+	@Test
+	void compareTo() {
+		Object object = new Object();
+		OneShotTimer oneShotTimer = new OneShotTimer(5);
+		DiscreteAction discreteAction = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);
+		DiscreteAction discreteAction2 = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);
+<span class="fc" id="L32">		discreteAction.setLapsTime(0);</span>
+		discreteAction2.setLapsTime(0);
+		assertEquals(0, discreteAction.compareTo(discreteAction2));
+
+		// lasptime &lt; lasptime2
+		discreteAction2.setLapsTime(1);
+		assertEquals(-1, discreteAction.compareTo(discreteAction2));
+
+		// lasptime &gt; lasptime2
+		assertEquals(1, discreteAction2.compareTo(discreteAction));
+	}
+
+	@Test
+	void next() {
+		Object object = new Object();
+		OneShotTimer oneShotTimer = new OneShotTimer(5);
+		DiscreteAction discreteAction = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);
+		DiscreteAction discreteAction2 = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);
+<span class="fc" id="L50">		discreteAction2.setLapsTime(5);</span>
+		assertEquals(discreteAction.next().getCurrentLapsTime(), discreteAction2.getCurrentLapsTime());
+
+	}
+
+	@Test
+	void hasNext() {
+<span class="fc" id="L57">		Object object = new Object();</span>
+<span class="fc" id="L58">		OneShotTimer oneShotTimer = new OneShotTimer(1);</span>
+<span class="fc" id="L59">		DiscreteAction discreteAction = new DiscreteAction(object, &quot;test&quot;, oneShotTimer);</span>
+<span class="fc" id="L60">		assertEquals(discreteAction.hasNext(), true);</span>
+<span class="fc" id="L61">	}</span>
+
+	@Test
+	void testToString() {
+<span class="fc" id="L65">		DiscreteActionInterfaceTest test = new DiscreteActionInterfaceTest();</span>
+<span class="fc" id="L66">		String m = &quot;methodeTest&quot;;</span>
+<span class="fc" id="L67">		OneShotTimer timer = new OneShotTimer(1);</span>
+<span class="fc" id="L68">		DiscreteAction action = new DiscreteAction(test, m, timer);</span>
+<span class="fc" id="L69">		action.next();</span>
+<span class="pc" id="L70">		assertEquals(&quot;Object : &quot; + &quot;action.ClasseTest&quot; + &quot;\n Method : &quot; + &quot;methodeTest&quot; + &quot;\n Stat. : &quot; + timer</span>
+<span class="pc" id="L71">				+ &quot;\n delay: &quot; + 1, action.toString());</span>
+<span class="nc" id="L72">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

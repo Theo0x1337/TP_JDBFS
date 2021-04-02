@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MergedTimerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">MergedTimerTest.java</span></div><h1>MergedTimerTest.java</h1><pre class="source lang-java linenums">package timer;
+
+
+/**
+ * @author theobernardin
+ */
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.TreeSet;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+<span class="fc" id="L15">class MergedTimerTest {</span>
+
+	private Timer time1;
+	private Timer time2;
+	
+	private Timer dateTimer1;
+	private Timer dateTimer2;
+	private Timer dateTimer3;
+	
+	
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L27">		this.time1 = new PeriodicTimer(10);</span>
+<span class="fc" id="L28">		this.time1 = new PeriodicTimer(12);</span>
+<span class="fc" id="L29">		TreeSet&lt;Integer&gt; dates = new TreeSet&lt;Integer&gt;();</span>
+<span class="fc" id="L30">		dates.add(50);</span>
+<span class="fc" id="L31">		dates.add(20);</span>
+<span class="fc" id="L32">		this.dateTimer1 = new DateTimer(dates) ;</span>
+<span class="fc" id="L33">		dates.add(30);</span>
+<span class="fc" id="L34">		this.dateTimer2 = new DateTimer(dates) ;</span>
+<span class="fc" id="L35">		dates.clear();</span>
+<span class="fc" id="L36">		this.dateTimer3 = new DateTimer(dates);</span>
+<span class="fc" id="L37">	}</span>
+
+	@Test
+	void testMergedTimer() {
+<span class="fc" id="L41">		MergedTimer timeMerge = new MergedTimer(this.time1,this.time2);</span>
+<span class="fc" id="L42">		assertEquals(this.time1,timeMerge.getTimer1());</span>
+<span class="fc" id="L43">		assertEquals(this.time2,timeMerge.getTimer2());</span>
+<span class="fc" id="L44">	}</span>
+	
+	
+	@Test
+	void testHasNextTrue() {
+<span class="fc" id="L49">		MergedTimer timeMerge = new MergedTimer(this.dateTimer1,this.dateTimer2);</span>
+<span class="fc" id="L50">		Boolean result = timeMerge.hasNext();</span>
+<span class="fc" id="L51">		assertEquals(true,result);</span>
+<span class="fc" id="L52">	}</span>
+	
+	@Test
+	void testHasNextFalse() {
+<span class="fc" id="L56">		MergedTimer timeMerge = new MergedTimer(this.dateTimer1,this.dateTimer3);</span>
+<span class="fc" id="L57">		Boolean result = timeMerge.hasNext();</span>
+<span class="fc" id="L58">		assertEquals(false,result);</span>
+<span class="fc" id="L59">	}</span>
+	
+	
+	@Test
+	void testNextTrue(){
+<span class="fc" id="L64">		MergedTimer timeMerge = new MergedTimer(this.dateTimer1,this.dateTimer2);</span>
+<span class="fc" id="L65">		Integer result = timeMerge.next();</span>
+<span class="fc" id="L66">		assertEquals(40,result);</span>
+<span class="fc" id="L67">	}</span>
+	
+	
+	@Test
+	void testNextFalse(){
+<span class="fc" id="L72">		MergedTimer timeMerge = new MergedTimer(this.dateTimer1,this.dateTimer2);</span>
+<span class="fc" id="L73">		Integer result = timeMerge.next();</span>
+<span class="nc" id="L74">		assertEquals(10,result);</span>
+<span class="nc" id="L75">	}</span>
+	
+	
+	@Test
+	void testNextNull(){
+<span class="fc" id="L80">		MergedTimer timeMerge = new MergedTimer(this.dateTimer1,this.dateTimer3);</span>
+<span class="fc" id="L81">		Integer result = timeMerge.next();</span>
+<span class="fc" id="L82">		assertEquals(null,result);</span>
+<span class="fc" id="L83">	}</span>
+	
+	
+	
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

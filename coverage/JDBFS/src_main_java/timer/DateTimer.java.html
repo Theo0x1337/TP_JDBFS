@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DateTimer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">DateTimer.java</span></div><h1>DateTimer.java</h1><pre class="source lang-java linenums">package timer;
+
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.Vector;
+
+/**
+ * DateTimer class representing the time interval between several dates
+ *
+ */
+public class DateTimer  implements Timer {
+	
+	Vector&lt;Integer&gt; lapsTimes;
+	Iterator&lt;Integer&gt; it;
+	
+	
+	/**
+	 * Constructor of the DateTimer class taking a TreeSet as parameter
+	 * @param date 
+	 * set of dates (TreeSet) which we will calculate the interval between each date and add them to an iterator
+	 */
+<span class="fc" id="L22">	public DateTimer(TreeSet&lt;Integer&gt; dates) {</span>
+<span class="fc" id="L23">		this.lapsTimes = new Vector&lt;Integer&gt;();</span>
+		Integer last;
+<span class="fc" id="L25">		Integer current=0;</span>
+		
+<span class="fc" id="L27">		Iterator&lt;Integer&gt; itr = dates.iterator();</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		while (itr.hasNext()) {</span>
+<span class="fc" id="L29">			last = current;</span>
+<span class="fc" id="L30">			current = itr.next();</span>
+<span class="fc" id="L31">			this.lapsTimes.add(current-last);</span>
+		}
+<span class="fc" id="L33">		this.it = this.lapsTimes.iterator();</span>
+
+<span class="fc" id="L35">	}</span>
+	
+	
+	/**
+	 * Constructor of the DateTimer class taking a Vector as parameter
+	 * @param lapsTimes
+	 * vector containing the time intervals between the different dates
+	 */
+<span class="fc" id="L43">	public DateTimer(Vector&lt;Integer&gt; lapsTimes) {</span>
+<span class="fc" id="L44">		this.lapsTimes = new Vector&lt;Integer&gt;(lapsTimes);</span>
+<span class="fc" id="L45">		this.it = this.lapsTimes.iterator();</span>
+<span class="fc" id="L46">	}</span>
+
+	@Override
+	/**
+	 * Overloaded method to know if the iterator has a next element 
+	 */
+	public boolean hasNext() {
+<span class="fc" id="L53">		return it.hasNext();</span>
+	}
+
+	@Override
+	/**
+	 * Overloaded method to get the next element of the iterator
+	 */
+	public Integer next() {
+<span class="fc" id="L61">		return it.next();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MergedTimer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">MergedTimer.java</span></div><h1>MergedTimer.java</h1><pre class="source lang-java linenums">package timer;
+
+/**
+ * 
+ *MergedTimer class allowing to merge two timers
+ */
+
+public class MergedTimer implements Timer{
+	
+	//attribute of type Timer representing the first timer to merge
+	private Timer timer1;
+	//Timer attribute representing the second timer to merge
+	private Timer timer2;
+	
+	
+	/**
+	 * Constructeur de la classe MergedTimer prenant 2 timers en parametre
+	 * @param timer1
+	 * 					premier timer a fusionner
+	 * @param timer2
+	 * 					deuxieme timer a fusionner
+	 */
+<span class="fc" id="L23">	public MergedTimer(Timer timer1, Timer timer2) {</span>
+<span class="fc" id="L24">		this.timer1 = timer1;</span>
+<span class="fc" id="L25">		this.timer2 = timer2;</span>
+<span class="fc" id="L26">	}</span>
+	
+	
+	/**
+	 * Overloaded method to know if the two timers have a next element
+	 */
+	@Override
+	public boolean hasNext() {
+<span class="pc bpc" id="L34" title="1 of 4 branches missed.">		return (this.timer1.hasNext() &amp;&amp; this.timer2.hasNext());</span>
+	}
+
+	
+	/**
+	 * Overloaded method, if the instance of the MergedTimer class has a next element, then it returns the sum of the two timers to merge
+	 */
+	@Override
+	public Integer next() {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if(this.hasNext()) {</span>
+<span class="fc" id="L44">			return this.timer1.next() + this.timer2.next();</span>
+		}
+<span class="fc" id="L46">		return null;</span>
+	}
+
+
+	public Timer getTimer1() {
+<span class="fc" id="L51">		return timer1;</span>
+	}
+
+
+	public void setTimer1(Timer timer1) {
+<span class="nc" id="L56">		this.timer1 = timer1;</span>
+<span class="nc" id="L57">	}</span>
+
+
+	public Timer getTimer2() {
+<span class="fc" id="L61">		return timer2;</span>
+	}
+
+
+	public void setTimer2(Timer timer2) {
+<span class="nc" id="L66">		this.timer2 = timer2;</span>
+<span class="nc" id="L67">	}</span>
+	
+	
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

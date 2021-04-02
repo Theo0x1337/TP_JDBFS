@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ClockTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">discreteBehaviorSimulator</a> &gt; <span class="el_source">ClockTest.java</span></div><h1>ClockTest.java</h1><pre class="source lang-java linenums">package discreteBehaviorSimulator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Date;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+<span class="fc" id="L10">class ClockTest {</span>
+	
+	@Test
+	void testgetInstance() {
+<span class="fc" id="L14">		Clock clock = null;</span>
+<span class="fc" id="L15">		assertNull(clock);</span>
+<span class="fc" id="L16">		assertTrue(Clock.getInstance() instanceof Clock);</span>
+<span class="fc" id="L17">		assertNotNull(Clock.getInstance());</span>
+<span class="fc" id="L18">	 }</span>
+	
+	@Test
+	public void testAddRemoveObserver() {
+		// Add observer
+<span class="fc" id="L23">		ClockObserver obs = new ClockObserverSubClass();</span>
+<span class="fc" id="L24">		assertFalse(Clock.getInstance().getObservers().contains(obs));</span>
+<span class="fc" id="L25">		Clock.getInstance().addObserver(obs);</span>
+<span class="fc" id="L26">		assertTrue(Clock.getInstance().getObservers().contains(obs));</span>
+		
+		// Remove observer
+<span class="fc" id="L29">		Clock.getInstance().removeObserver(obs);</span>
+<span class="fc" id="L30">		assertFalse(Clock.getInstance().getObservers().contains(obs));</span>
+<span class="fc" id="L31">	}</span>
+	
+	@Test
+	public void testVirtual() {
+		// If virtual is true
+<span class="fc" id="L36">		Clock.getInstance().setVirtual(true);</span>
+<span class="fc" id="L37">		assertTrue(Clock.getInstance().isVirtual());</span>
+		
+		// If virtual is false
+<span class="fc" id="L40">		Clock.getInstance().setVirtual(false);</span>
+<span class="fc" id="L41">		assertFalse(Clock.getInstance().isVirtual());</span>
+<span class="fc" id="L42">	}</span>
+	
+	@Test
+	public void testSetNextJump() {
+		// Add three observers
+<span class="fc" id="L47">		ClockObserver obs = new ClockObserverSubClass();</span>
+<span class="fc" id="L48">		ClockObserver obs2 = new ClockObserverSubClass();</span>
+<span class="fc" id="L49">		ClockObserver obs3 = new ClockObserverSubClass();</span>
+<span class="fc" id="L50">		Clock.getInstance().addObserver(obs);</span>
+<span class="fc" id="L51">		Clock.getInstance().addObserver(obs2);</span>
+<span class="fc" id="L52">		Clock.getInstance().addObserver(obs3);</span>
+		
+		// Set next jump
+<span class="fc" id="L55">		int nextJump = 4;</span>
+<span class="fc" id="L56">		Clock.getInstance().setNextJump(nextJump);</span>
+		
+		// Check
+<span class="fc" id="L59">		assertEquals(Clock.getInstance().getNextJump(),4);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		for (ClockObserver observer : Clock.getInstance().getObservers()) {</span>
+<span class="fc" id="L61">			assertTrue(observer.isNextClockChangeCalled());</span>
+		}
+<span class="fc" id="L63">	}</span>
+	
+	@Test
+	public void testSetNextJumpNegatif(){
+		// Add an observer
+<span class="fc" id="L68">		ClockObserver obs = new ClockObserverSubClass();</span>
+<span class="fc" id="L69">		Clock.getInstance().addObserver(obs);</span>
+		
+		// Set next jump
+<span class="fc" id="L72">		int nextJump = -3;</span>
+		
+		// We check that an exception is thrown if the next jump is negative
+<span class="nc" id="L75">		assertThrows(Exception.class, () -&gt; {</span>
+<span class="fc" id="L76">			Clock.getInstance().setNextJump(nextJump);</span>
+<span class="fc" id="L77">		});</span>
+<span class="nc" id="L78">	}</span>
+	
+	@Test
+	public void testIncreaseDifferent() {
+<span class="fc" id="L82">		Clock.getInstance().setNextJump(3);</span>
+		
+		// We check that an exception is thrown if time is different than nextJump
+<span class="fc" id="L85">		assertThrows(Exception.class, () -&gt; {</span>
+<span class="nc" id="L86">			Clock.getInstance().increase(4);</span>
+<span class="nc" id="L87">		});</span>
+<span class="fc" id="L88">	}</span>
+	
+	@Test
+	public void testIncreaseSame() throws Exception {
+		// Add three observers
+<span class="fc" id="L93">		ClockObserver obs = new ClockObserverSubClass();</span>
+<span class="fc" id="L94">		ClockObserver obs2 = new ClockObserverSubClass();</span>
+<span class="fc" id="L95">		ClockObserver obs3 = new ClockObserverSubClass();</span>
+<span class="fc" id="L96">		Clock.getInstance().addObserver(obs);</span>
+<span class="fc" id="L97">		Clock.getInstance().addObserver(obs2);</span>
+<span class="fc" id="L98">		Clock.getInstance().addObserver(obs3);</span>
+		
+		// increase time
+<span class="fc" id="L101">		Clock.getInstance().setTime(10);</span>
+<span class="fc" id="L102">		Clock.getInstance().setNextJump(3);</span>
+<span class="fc" id="L103">		Clock.getInstance().increase(3);</span>
+		
+		// Check if the time was successfully incremented
+<span class="fc" id="L106">		assertEquals(Clock.getInstance().getTime(),13);</span>
+		
+		// Check the observers called the clockChange method
+<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (ClockObserver observer : Clock.getInstance().getObservers()) {</span>
+<span class="fc" id="L110">			assertTrue(observer.isClockChangeCalled());</span>
+		}
+		
+<span class="fc" id="L113">	}</span>
+	
+	@Test
+	public void testGetTimeVirtual() {
+<span class="fc" id="L117">		Clock.getInstance().setVirtual(true);</span>
+<span class="fc" id="L118">		Clock.getInstance().setTime(10);</span>
+<span class="fc" id="L119">		assertEquals(Clock.getInstance().getTime(),10);</span>
+<span class="fc" id="L120">	}</span>
+	
+	@Test
+	public void testGetTimeNotVirtual() {
+<span class="fc" id="L124">		Clock.getInstance().setVirtual(false);</span>
+<span class="fc" id="L125">		assertEquals(Clock.getInstance().getTime(),new Date().getTime());</span>
+<span class="fc" id="L126">	}</span>
+	
+	@Test
+	public void testToString() {
+<span class="fc" id="L130">		Clock.getInstance().setTime(10);</span>
+<span class="fc" id="L131">		assertEquals(Clock.getInstance().toString(),String.valueOf(Clock.getInstance().getTime()));</span>
+<span class="fc" id="L132">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

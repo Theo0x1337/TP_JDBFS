@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteAction.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">action</a> &gt; <span class="el_source">DiscreteAction.java</span></div><h1>DiscreteAction.java</h1><pre class="source lang-java linenums">package action;
+
+import java.lang.reflect.Method;
+import java.util.TreeSet;
+import java.util.Vector;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import discreteBehaviorSimulator.LogFormatter;
+import timer.Timer;
+
+/**
+ * @author Tiphaine Bulou (2016)
+ * @author Flavien Vernier
+ *
+ */
+
+// TODO must inherit from Action
+public class DiscreteAction implements DiscreteActionInterface {
+	private Object object;
+	private Method method;
+	
+	
+	private Timer timmer;				// timer provides new lapsTime
+	//private TreeSet&lt;Integer&gt; dates;	// obsolete, managed in timer 
+	//private Vector&lt;Integer&gt; lapsTimes;// obsolete, managed in timer
+	private Integer lapsTime; 			// waiting time (null if never used)
+	
+	private Logger logger;
+
+	// Constructor
+	
+<span class="fc" id="L35">	private DiscreteAction() {</span>
+		// Start logger
+<span class="fc" id="L37">			this.logger = Logger.getLogger(&quot;DAS&quot;);</span>
+			//this.logger = Logger.getLogger(&quot;APP&quot;);
+<span class="fc" id="L39">			this.logger.setLevel(Level.ALL);</span>
+<span class="fc" id="L40">			this.logger.setUseParentHandlers(true);</span>
+			
+			/*FileHandler logFile; 
+			ConsoleHandler logConsole; 
+			try{
+				this.logFile = new FileHandler(this.getClass().getName() + &quot;.log&quot;);
+				//this.logFile.setFormatter(new SimpleFormatter());
+				this.logFile.setFormatter(new LogFormatter());
+				this.logConsole = new ConsoleHandler();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			this.logger.addHandler(logFile);
+			this.logger.addHandler(logConsole);*/
+<span class="fc" id="L54">	}</span>
+	/**
+	 * allows access to the object on which the action will be performed, the method to be applied to the object and the waiting time before applying the method
+	 * @param o
+	 * @param m
+	 * @param timer
+	 * @exception e
+	 */
+	public DiscreteAction(Object o, String m, Timer timmer){
+<span class="fc" id="L63">		this();</span>
+<span class="fc" id="L64">		this.object = o;</span>
+		try{	
+<span class="fc" id="L66">			this.method = o.getClass().getDeclaredMethod(m, new Class&lt;?&gt;[0]);</span>
+<span class="fc" id="L67">		}</span>
+<span class="fc" id="L68">		catch(Exception e){</span>
+<span class="fc" id="L69">			e.printStackTrace();</span>
+		}
+<span class="fc" id="L71">		this.timmer = timmer;</span>
+		//this.updateTimeLaps();
+<span class="fc" id="L73">	}</span>
+	
+	// ATTRIBUTION
+	/**
+	 * decrease the time of discrete action 
+	 * @param t
+	 */
+	public void spendTime(int t) {
+<span class="fc" id="L81">		Integer old = this.lapsTime;</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">		if(this.lapsTime != null) {</span>
+<span class="fc" id="L83">			this.lapsTime -= t;</span>
+		}
+<span class="fc" id="L85">		this.logger.log(Level.FINE, &quot;[DA] operate spendTime on  &quot; + this.getObject().getClass().getName() + &quot;:&quot; + this.getObject().hashCode() + &quot;: old time &quot; + old + &quot; new time &quot; + this.getCurrentLapsTime());</span>
+		//System.out.println(         &quot;[DA] operate spendTime on  &quot; + this.getObject().getClass().getName() + &quot;:&quot; + this.getObject().hashCode() + &quot;: old time &quot; + old + &quot; new time &quot; + this.getCurrentLapsTime() + &quot;\n&quot;);
+<span class="fc" id="L87">	}</span>
+
+	// RECUPERATION
+	/*
+	 * return the method to execute
+	 */
+	public Method getMethod(){
+<span class="fc" id="L94">		return method;</span>
+	}
+	/*
+	 * return the last laps time without update
+	 */
+	public Integer getCurrentLapsTime(){
+<span class="fc" id="L100">		return lapsTime;</span>
+	}
+	/*
+	 * get the object on which the method must be invoked
+	 */
+	public Object getObject(){
+<span class="fc" id="L106">		return object;</span>
+	}
+
+
+
+	// COMPARAISON
+	/**
+	 * compare discrete action according to the time before execution
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
+	 */
+	public int compareTo(DiscreteActionInterface c) {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		if (this.lapsTime == null) { // no lapstime is equivalent to infinity </span>
+<span class="fc" id="L120">			return 1;</span>
+		}
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (c.getCurrentLapsTime() == null) {// no lapstime is equivalent to infinity </span>
+<span class="fc" id="L123">			return -1;</span>
+		}
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    	if(this.lapsTime &gt; c.getCurrentLapsTime()){</span>
+<span class="nc" id="L126">    		return 1;</span>
+    	}
+<span class="nc bnc" id="L128" title="All 2 branches missed.">    	if(this.lapsTime &lt; c.getCurrentLapsTime()){</span>
+<span class="nc" id="L129">    		return -1;</span>
+    	}
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if(this.lapsTime == c.getCurrentLapsTime()){</span>
+<span class="nc" id="L132">			return 0;</span>
+		}
+<span class="nc" id="L134">		return 0;</span>
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString(){
+<span class="fc" id="L141">		return &quot;Object : &quot; + this.object.getClass().getName() + &quot;\n Method : &quot; + this.method.getName()+&quot;\n Stat. : &quot;+ this.timmer + &quot;\n delay: &quot; + this.lapsTime;</span>
+
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
+	public DiscreteActionInterface next() {
+<span class="fc" id="L149">		Integer old = this.lapsTime;</span>
+<span class="fc" id="L150">		this.lapsTime = this.timmer.next();</span>
+<span class="fc" id="L151">		this.logger.log(Level.FINE, &quot;[DA] operate next on  &quot; + this.getObject().getClass().getName() + &quot;:&quot; + this.getObject().hashCode() + &quot;: old time &quot; + old + &quot; new time &quot; + this.getCurrentLapsTime());</span>
+		//System.out.println(&quot;[DA] operate 'next' on &quot; + this.getObject().getClass().getName() + &quot;:&quot; + this.getObject().hashCode() + &quot;: old time &quot; + old + &quot; new time &quot; + this.getCurrentLapsTime() + &quot;\n&quot;);
+<span class="fc" id="L153">		return this;</span>
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
+	public boolean hasNext() {
+<span class="fc" id="L161">		Boolean more=false;</span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">		if (this.timmer != null &amp;&amp; this.timmer.hasNext()) {</span>
+<span class="fc" id="L163">			more = true;</span>
+		}/*else if (this.dates != null) {
+			more = !this.dates.isEmpty();
+		}else if (this.lapsTimes != null) {
+			more = !this.lapsTimes.isEmpty();
+		}*/
+<span class="fc" id="L169">		return more;		</span>
+	}
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

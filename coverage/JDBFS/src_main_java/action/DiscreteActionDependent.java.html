@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteActionDependent.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">action</a> &gt; <span class="el_source">DiscreteActionDependent.java</span></div><h1>DiscreteActionDependent.java</h1><pre class="source lang-java linenums">package action;
+
+import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.TreeSet;
+
+import timer.Timer;
+
+/**
+ * @author flver
+ *
+ */
+//TODO Must be refactored to be generic
+public class DiscreteActionDependent implements DiscreteActionInterface {
+	
+	protected DiscreteAction baseAction;
+	protected TreeSet&lt;DiscreteAction&gt; depedentActions;
+	private Iterator&lt;DiscreteAction&gt; it;
+	protected DiscreteAction currentAction;
+	
+	
+	/**
+	 * Construct a series of dependent actions, first action (method) called is baseMethodName, then method nextMethod() is called to select the next action. 
+	 * 
+	 * @param o
+	 * @param baseMethodName
+	 * @param timerBase
+	 */	
+<span class="fc" id="L29">	public DiscreteActionDependent(Object o, String baseMethodName, Timer timerBase){</span>
+<span class="fc" id="L30">		this.baseAction = new DiscreteAction(o, baseMethodName, timerBase);</span>
+<span class="fc" id="L31">		this.depedentActions = new TreeSet&lt;DiscreteAction&gt;();</span>
+<span class="fc" id="L32">		this.it = this.depedentActions.iterator();</span>
+<span class="fc" id="L33">		this.currentAction = this.baseAction;</span>
+<span class="fc" id="L34">	}</span>
+	
+	/**
+	 * Adds a dependent action
+	 * @param o
+	 * @param depentMethodName
+	 * @param timerDependence
+	 */
+	public void addDependence(Object o, String depentMethodName, Timer timerDependence) {
+<span class="fc" id="L43">		this.depedentActions.add(new DiscreteAction(o, depentMethodName, timerDependence));</span>
+<span class="fc" id="L44">	}</span>
+	
+	/*private void dates2Timalapse(TreeSet&lt;Integer&gt; datesOn, TreeSet&lt;Integer&gt; datesOff, Vector&lt;Integer&gt; timeLapseOn, Vector&lt;Integer&gt; timeLapseOff) {
+		Vector&lt;Integer&gt; currentTimeLapse;
+		TreeSet&lt;Integer&gt; currentDates;
+		Integer date=0;
+		if(datesOn.first()&lt;datesOff.first()) {
+			currentTimeLapse = timeLapseOn;
+			currentDates = datesOn;
+		}else {
+			currentTimeLapse = timeLapseOff;	
+			currentDates = datesOff;		
+		}
+		Integer nextDate;
+		
+		while(datesOn.size()&gt;0 || datesOff.size()&gt;0) {
+			nextDate = currentDates.first();
+		
+			currentTimeLapse.add(nextDate - date);
+			currentDates.remove(nextDate);
+		
+			date = nextDate;
+			
+			if(currentDates == datesOn) {
+				currentDates = datesOff;
+				currentTimeLapse = timeLapseOff;
+			}else {
+				currentDates = datesOn;
+				currentTimeLapse = timeLapseOn;			
+			}
+		}
+		
+	}
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public DiscreteActionDependent(Wo o, String on, TreeSet&lt;Integer&gt; datesOn, String off, TreeSet&lt;Integer&gt; datesOff){
+		Vector&lt;Integer&gt; timeLapseOn = new Vector&lt;Integer&gt;();
+		Vector&lt;Integer&gt; timeLapseOff = new Vector&lt;Integer&gt;();
+		
+		dates2Timalapse((TreeSet&lt;Integer&gt;)datesOn.clone(), (TreeSet&lt;Integer&gt;)datesOff.clone(), timeLapseOn, timeLapseOff);
+		
+		this.baseAction = new DiscreteAction(o, on, timeLapseOn);
+		this.offAction = new DiscreteAction(o, off, timeLapseOff);
+		
+		if(datesOn.first() &lt; datesOff.first()){
+			this.currentAction = this.baseAction;
+		}else{
+			this.currentAction = this.offAction;
+		}
+	}
+*/
+	private void reInit() {
+		//this.baseAction.updateTimeLaps();
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		for (Iterator&lt;DiscreteAction&gt; iter = this.depedentActions.iterator(); iter.hasNext(); ) {</span>
+<span class="nc" id="L97">		    DiscreteAction element = iter.next();</span>
+		    //element.updateTimeLaps();
+		}		
+<span class="nc" id="L100">	}</span>
+	/**
+	 * allows you to use the following action 
+	 */
+	public void nextMethod(){
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (this.currentAction == this.baseAction){</span>
+<span class="fc" id="L106">			this.it = this.depedentActions.iterator();</span>
+<span class="fc" id="L107">			this.currentAction = this.it.next();</span>
+<span class="pc bnc" id="L108" title="All 2 branches missed.">		}else if(this.currentAction == this.depedentActions.last()){</span>
+<span class="nc" id="L109">			this.currentAction = this.baseAction;</span>
+<span class="nc" id="L110">			this.reInit();</span>
+<span class="nc" id="L111">		}else {</span>
+<span class="nc" id="L112">			this.currentAction = this.it.next();</span>
+		}
+<span class="fc" id="L114">	}</span>
+	
+	/**
+	 * decrease the time of discrete action 
+	 * @param t
+	 */
+	public void spendTime(int t) {
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		for (Iterator&lt;DiscreteAction&gt; iter = this.depedentActions.iterator(); iter.hasNext(); ) {</span>
+<span class="nc" id="L122">		    DiscreteAction element = iter.next();</span>
+<span class="nc" id="L123">		    element.spendTime(t);</span>
+		}
+<span class="fc" id="L125">	}</span>
+	/**
+	 * time laps is updated at the re-initialization
+	 */
+	public void updateTimeLaps() {
+		// time laps is updated at the re-initialization
+		//this.currentAction.updateTimeLaps();	
+<span class="fc" id="L132">		this.nextMethod();	</span>
+<span class="fc" id="L133">	}</span>
+	/*
+	 * return the method to execute
+	 */
+	public Method getMethod() {
+<span class="fc" id="L138">		return this.currentAction.getMethod();</span>
+	}
+	/*
+	 * return the last laps time without update
+	 */
+	public Integer getCurrentLapsTime() {
+<span class="fc" id="L144">		return this.currentAction.getCurrentLapsTime();</span>
+	}
+	/*
+	 * get the object on which the method must be invoked
+	 */
+	public Object getObject() {
+<span class="fc" id="L150">		return this.currentAction.getObject();</span>
+	}
+	
+	/**
+	 * compare discrete action according to the time before execution
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @param c
+	 */
+	public int compareTo(DiscreteActionInterface c) {
+<span class="fc" id="L160">		return this.currentAction.compareTo(c);</span>
+	}
+	/**
+	 * allows you to know if there are other actions to be carried out
+	 * @return
+	 */
+	public Boolean isEmpty() {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		return !this.hasNext();</span>
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
+	public DiscreteActionInterface next() {
+		//Integer lapsTime = this.getNextLapsTime();
+<span class="fc" id="L175">		Method method = this.getMethod();</span>
+<span class="fc" id="L176">		Object object = this.getObject();</span>
+<span class="fc" id="L177">		return this;</span>
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
+	public boolean hasNext() {
+<span class="pc bpc" id="L184" title="3 of 4 branches missed.">		return this.baseAction.hasNext() || !this.depedentActions.isEmpty();		</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

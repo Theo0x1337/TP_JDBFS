@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ClockObserverSubClass.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">discreteBehaviorSimulator</a> &gt; <span class="el_source">ClockObserverSubClass.java</span></div><h1>ClockObserverSubClass.java</h1><pre class="source lang-java linenums">package discreteBehaviorSimulator;
+
+/**
+ * A new class which was not in the original code created 
+ * to instantiate and test the clockObserver.
+ * @author simon
+ *
+ */
+<span class="fc" id="L9">public class ClockObserverSubClass implements ClockObserver {</span>
+	
+<span class="fc" id="L11">	public boolean clockChangeCalled = false; // to know if the method is called</span>
+<span class="fc" id="L12">	public boolean nextClockChangeCalled = false; // to know if the method is called</span>
+
+	/**
+	 * to know if the method is called
+	 */
+	public boolean isClockChangeCalled() {
+<span class="fc" id="L18">		return clockChangeCalled;</span>
+	}
+
+	/**
+	 * to know if the method is called
+	 */
+	public boolean isNextClockChangeCalled() {
+<span class="fc" id="L25">		return nextClockChangeCalled;</span>
+	}
+
+	/**
+	 * setter 
+	 * @param clockChangeCalled
+	 */
+	public void setClockChangeCalled(boolean clockChangeCalled) {
+<span class="fc" id="L33">		this.clockChangeCalled = clockChangeCalled;</span>
+<span class="fc" id="L34">	}</span>
+
+	/**
+	 * setter 
+	 * @param clockChangeCalled
+	 */
+	public void setNextClockChangeCalled(boolean nextClockChangeCalled) {
+<span class="fc" id="L41">		this.nextClockChangeCalled = nextClockChangeCalled;</span>
+<span class="fc" id="L42">	}</span>
+
+	@Override
+	public void clockChange(int time) {
+<span class="fc" id="L46">		this.setClockChangeCalled(true);</span>
+<span class="fc" id="L47">	}</span>
+
+	@Override
+	public void nextClockChange(int nextJump) {
+<span class="fc" id="L51">		this.setNextClockChangeCalled(true);</span>
+<span class="fc" id="L52">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

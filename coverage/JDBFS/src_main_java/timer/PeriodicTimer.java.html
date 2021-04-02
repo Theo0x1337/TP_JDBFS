@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PeriodicTimer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">PeriodicTimer.java</span></div><h1>PeriodicTimer.java</h1><pre class="source lang-java linenums">package timer;
+
+/**
+ * Classe PeriodicTimer, qui represente un timer s'executant de maniere periodique
+ *
+ */
+public class PeriodicTimer implements Timer {
+
+	//Integer attribute representing the period between two timer ticks
+	private int period;
+	//Integer attribute representing the time when the next timer tick will occur
+	private int next;
+	//Attribute of type RandomTimer which will generate timer ticks randomly according to a distribution law
+<span class="fc" id="L14">	private RandomTimer moreOrLess = null;</span>
+	
+	
+	/**
+	 * Constructor of the PeriodicTimer class taking a time period as parameter
+	 * @param at
+	 * period of time between two triggers of the PeriodicTimer object
+	 */
+<span class="fc" id="L22">	public PeriodicTimer(int at) {</span>
+<span class="fc" id="L23">		this.period = at;</span>
+<span class="fc" id="L24">		this.next = at;</span>
+<span class="fc" id="L25">	}</span>
+	
+	/**
+	 * Constructor of the PeriodicTimer class taking a period and a RandomTimer object as parameters
+	 * @param at
+	 * period of time between two triggers of the PeriodicTimer object
+	 * @param moreOrLess
+	 * RandomTimer allowing to simulate the next triggering of the PeriodicTimer
+	 * 
+	 * use MergedTimer instead
+	 */
+	@Deprecated
+<span class="fc" id="L37">	public PeriodicTimer(int at, RandomTimer moreOrLess) {</span>
+<span class="fc" id="L38">		this.period = at;</span>
+<span class="fc" id="L39">		this.moreOrLess = moreOrLess;</span>
+<span class="fc" id="L40">		this.next = at + (int)(this.moreOrLess.next() - this.moreOrLess.getMean());</span>
+<span class="fc" id="L41">	}</span>
+	
+	
+	/**
+	 * Constructor of the PeriodicTimer class taking as parameters a period and another integer representing the next trigger of the PeriodicTimer
+	 * @param period
+	 * the period of time between two triggers of the PeriodicTimer
+	 * @param at
+	 * the time of the next triggering of the PeriodicTimer
+	 */
+<span class="fc" id="L51">	public PeriodicTimer(int period, int at) {</span>
+<span class="fc" id="L52">		this.period = period;</span>
+<span class="fc" id="L53">		this.next = at;</span>
+<span class="fc" id="L54">	}</span>
+	
+	/**
+	 * Constructor of the PeriodicTimer class taking a period and a RandomTimer object as parameters
+	 * @param period
+	 * the period of time between two timer triggers
+	 * @param at
+	 * the time of the next triggering of the PeriodicTimer
+	 * @param moreOrLess
+	 * RandomTimer to simulate the next PeriodicTimer triggering
+	 * 
+	 * use MergedTimer instead
+	 */
+	@Deprecated
+<span class="fc" id="L68">	public PeriodicTimer(int period, int at, RandomTimer moreOrLess) {</span>
+<span class="fc" id="L69">		this.period = period;</span>
+<span class="fc" id="L70">		this.moreOrLess = moreOrLess;</span>
+<span class="fc" id="L71">		this.next = at + (int)(this.moreOrLess.next() - this.moreOrLess.getMean());</span>
+<span class="fc" id="L72">	}</span>
+	
+	
+	/**
+	 * Getter of the period attribute
+	 * @return An integer that corresponds to the period between two triggering of the PeriodicTimer instance 
+	 */
+	public int getPeriod() {
+<span class="fc" id="L80">		return this.period;</span>
+	}
+	
+	
+	/**
+	 * Overloading the next method
+	 */
+	@Override
+	public Integer next() {
+		
+<span class="fc" id="L90">		int next =  this.next;</span>
+		
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if(this.moreOrLess != null) {</span>
+<span class="nc" id="L93">			this.next = this.period + (int)(this.moreOrLess.next() - this.moreOrLess.getMean());</span>
+<span class="nc" id="L94">		}else {</span>
+<span class="fc" id="L95">			this.next = this.period;</span>
+		}
+		
+<span class="fc" id="L98">		return next;</span>
+	}
+	
+	/*@Override
+	public Integer next(int since) {
+		
+		int next = (this.at - (since % this.period) + this.period) % this.period;
+		
+		if(this.moreOrLess != null) {
+			next += this.moreOrLess.next() - this.moreOrLess.getMean();
+			this.next = this.period * 2 - next;
+		}else {
+			this.next = this.period;
+		}
+		
+		return next;
+	}*/
+
+	/**
+	 * Overloading the hasNext method
+	 */
+	@Override
+	public boolean hasNext() {
+<span class="fc" id="L121">		return true;</span>
+	}
+
+	public int getNext() {
+<span class="fc" id="L125">		return next;</span>
+	}
+
+	public RandomTimer getMoreOrLess() {
+<span class="nc" id="L129">		return moreOrLess;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RandomTimer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">RandomTimer.java</span></div><h1>RandomTimer.java</h1><pre class="source lang-java linenums">package timer;
+
+import java.util.Random;
+import java.util.Vector;
+
+/**
+ * @author Flavien Vernier
+ *
+ */
+
+public class RandomTimer implements Timer {
+	
+	//enumeration of possible distribution laws
+<span class="fc" id="L14">	public static enum randomDistribution {</span>
+<span class="fc" id="L15">		POISSON, EXP, POSIBILIST, GAUSSIAN;</span>
+	}
+	
+	//private static String randomDistributionString[] = {&quot;POISSON&quot;, &quot;EXP&quot;, &quot;POSIBILIST&quot;, &quot;GAUSSIAN&quot;};
+	
+	//attribute containing a random number
+<span class="fc" id="L21">	private Random r = new Random();</span>
+	//attribute containing the type of distribution chosen randomly
+	private randomDistribution distribution;
+	//attribute representing the rate for the exp law
+	private double rate;
+	//attribut representant la moyenne pour la loi de poisson
+	private double mean;
+	//attribute representing the mean for the fish law
+	private double lolim;
+	//attribute representing the upper limit for the Gaussian or probabilistic law
+	private double hilim; 
+	//private int width; 
+	
+	
+	/**
+	 * Method for randomly simulating a type of distribution among the fish, exp, gaussian and posibilistic distributions for the triggering of a timer
+	 * @param distributionName
+	 * name of the distribution that will be randomly chosen
+	 * @return a randomDistribution object with a randomly chosen distribution law
+	 */
+	public static randomDistribution string2Distribution(String distributionName){
+<span class="fc" id="L42">		return RandomTimer.randomDistribution.valueOf(RandomTimer.randomDistribution.class, distributionName.toUpperCase());</span>
+	}	
+	
+	/**
+	 * Get the name of the distribution law stored in the distribution attribute
+	 * @param distribution
+	 * @return a string corresponding to the name of the distribution law of the timer
+	 */
+	public static String distribution2String(randomDistribution distribution){
+<span class="fc" id="L51">		return distribution.name();</span>
+	}
+	
+	/**
+	 * Get the name of the distribution law stored in the distribution attribute
+	 * @param distribution
+	 * @return a string corresponding to the name of the distribution law of the timer
+	 */
+<span class="fc" id="L59">	public RandomTimer(randomDistribution distribution, double param) throws Exception{</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if(distribution == randomDistribution.EXP ){</span>
+<span class="fc" id="L61">			this.distribution = distribution;</span>
+<span class="fc" id="L62">			this.rate = param;</span>
+<span class="fc" id="L63">			this.mean = 1/param;</span>
+<span class="fc" id="L64">			this.lolim = 0;</span>
+<span class="fc" id="L65">			this.hilim = Double.POSITIVE_INFINITY;</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">		}else if(distribution == randomDistribution.POISSON){</span>
+<span class="fc" id="L67">			this.distribution = distribution;</span>
+<span class="fc" id="L68">			this.rate = Double.NaN;</span>
+<span class="fc" id="L69">			this.mean = param;</span>
+<span class="fc" id="L70">			this.lolim = 0;</span>
+<span class="fc" id="L71">			this.hilim = Double.POSITIVE_INFINITY;</span>
+<span class="fc" id="L72">		}else{</span>
+<span class="nc" id="L73">			throw new Exception(&quot;Bad Timer constructor for selected distribution&quot;);</span>
+		}
+<span class="fc" id="L75">	}</span>
+	
+	/**
+	 * Cosntructor of the class specifying the calculations to be performed according to the probabilistic or Gaussian distribution law
+	 * @param distribution
+	 * the type of distribution
+	 * @param lolim
+	 * lower limit of the model
+	 * @param hilim
+	 * upper limit of the model
+	 * @throws Exception
+	 */
+<span class="fc" id="L87">	public RandomTimer(randomDistribution distribution, int lolim, int hilim) throws Exception{</span>
+<span class="pc bpc" id="L88" title="1 of 4 branches missed.">		if(distribution == randomDistribution.POSIBILIST || distribution == randomDistribution.GAUSSIAN){</span>
+<span class="fc" id="L89">			this.distribution = distribution;</span>
+<span class="fc" id="L90">			this.mean = lolim + (hilim - lolim)/2;</span>
+<span class="fc" id="L91">			this.rate = Double.NaN;</span>
+<span class="fc" id="L92">			this.lolim = lolim;</span>
+<span class="fc" id="L93">			this.hilim = hilim;</span>
+<span class="fc" id="L94">		}else{</span>
+<span class="nc" id="L95">			throw new Exception(&quot;Bad Timer constructor for selected distribution&quot;);</span>
+		}
+<span class="fc" id="L97">	}</span>
+	
+	
+	/**
+	 * Getter of the distribution attribute
+	 * @return the name of the distribution type used by the instance
+	 */
+	public String getDistribution(){
+<span class="fc" id="L105">		return this.distribution.name();</span>
+	}
+	
+	
+	/**
+	 * Method to obtain the different parameters according to the distribution law
+	 * @return the parameters of the distribution law or null if none match
+	 */
+	public String getDistributionParam() {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		if(distribution == randomDistribution.EXP ){</span>
+<span class="fc" id="L115">			return &quot;rate: &quot; + this.rate;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		}else if(distribution == randomDistribution.POISSON){</span>
+<span class="fc" id="L117">			return &quot;mean: &quot; + this.mean;</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">		}else if(distribution == randomDistribution.POSIBILIST || distribution == randomDistribution.GAUSSIAN){</span>
+<span class="fc" id="L119">			return &quot;lolim: &quot; + this.lolim + &quot; hilim: &quot; + this.hilim;</span>
+		}
+		
+<span class="nc" id="L122">		return &quot;null&quot;;</span>
+	}
+	
+	/*
+	 * Getter permettant d'obtenir la moyenne de la distribution en renvoyant l'attribut mean
+	 */
+	public double getMean(){
+<span class="fc" id="L129">		return this.mean;</span>
+	}
+	
+	/*
+	 * Getter allowing to obtain the average of the distribution by returning the attribute mean
+	 */
+	public String toString(){
+<span class="fc" id="L136">		String s = this.getDistribution();</span>
+<span class="pc bpc" id="L137" title="1 of 5 branches missed.">		switch (this.distribution){</span>
+		case POSIBILIST :
+<span class="fc" id="L139">			s += &quot; LoLim:&quot; + this.lolim + &quot; HiLim:&quot; + this.hilim;</span>
+<span class="fc" id="L140">			break;</span>
+		case POISSON :
+<span class="fc" id="L142">			s += &quot; mean:&quot; + this.mean;</span>
+<span class="fc" id="L143">			break;</span>
+		case EXP :
+<span class="fc" id="L145">			s += &quot; rate:&quot; + this.rate;</span>
+<span class="fc" id="L146">			break;</span>
+		case GAUSSIAN :
+<span class="fc" id="L148">			s += &quot; LoLim:&quot; + this.lolim + &quot; HiLim:&quot; + this.hilim;</span>
+			break;
+		}
+		
+<span class="fc" id="L152">		return s;</span>
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see methodInvocator.Timer#next()
+	 */
+	@Override
+	public Integer next(){
+<span class="pc bpc" id="L161" title="3 of 5 branches missed.">		switch (this.distribution){</span>
+		case POSIBILIST :
+<span class="nc" id="L163">			return this.nextTimePosibilist();</span>
+		case POISSON :
+<span class="fc" id="L165">			return this.nextTimePoisson();</span>
+		case EXP :
+<span class="fc" id="L167">			return this.nextTimeExp();</span>
+		case GAUSSIAN :
+<span class="nc" id="L169">			return this.nextTimeGaussian();</span>
+		}
+<span class="nc" id="L171">		return -1; // Theoretically impossible !!!</span>
+	}
+	
+	/*
+	 * Equivalent to methodInvocator.RandomTimer#next()
+	 * 
+	 * @param since has no effect
+	 * 
+	 * @see methodInvocator.RandomTimer#next(int)
+	 */
+	/*@Override
+	public Integer next(int since){
+		return this.next();
+	}*/
+	
+	/*
+	 * Next time according to the distribution of the probabilistic law
+	 */
+	private int nextTimePosibilist(){
+<span class="nc" id="L190">	    return (int)this.lolim + (int)(this.r.nextDouble() * (this.hilim - this.lolim));</span>
+	}
+	
+	/*
+	 * Prochain temps selon la distribution de la loi exp
+	 */
+	private int nextTimeExp(){
+<span class="fc" id="L197">	    return (int)(-Math.log(1.0 - this.r.nextDouble()) / this.rate);</span>
+	}
+	
+	
+	/*
+	 * Next time according to the distribution of the law exp
+	 */
+	private int nextTimePoisson() {
+	    
+<span class="fc" id="L206">	    double L = Math.exp(-this.mean);</span>
+<span class="fc" id="L207">	    int k = 0;</span>
+<span class="fc" id="L208">	    double p = 1.0;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">	    do {</span>
+<span class="fc" id="L210">	        p = p * this.r.nextDouble();</span>
+<span class="fc" id="L211">	        k++;</span>
+<span class="fc" id="L212">	    } while (p &gt; L);</span>
+<span class="fc" id="L213">	    return k - 1;</span>
+	}   		
+	    
+	/*
+	 * method that returns the next timer tick according to the gaussian distribution
+	 */
+	private int nextTimeGaussian(){
+<span class="nc" id="L220">		return (int)this.lolim + (int)((this.r.nextGaussian() + 1.0)/2.0 * (this.hilim - this.lolim));</span>
+	}
+	
+	
+	/**
+	 * Overloading the hasNext method
+	 */
+	@Override
+	public boolean hasNext() {
+<span class="nc" id="L229">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DiscreteActionSimulatorTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">discreteBehaviorSimulator</a> &gt; <span class="el_source">DiscreteActionSimulatorTest.java</span></div><h1>DiscreteActionSimulatorTest.java</h1><pre class="source lang-java linenums">package discreteBehaviorSimulator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Collections;
+import java.util.Vector;
+
+import org.junit.jupiter.api.Test;
+
+import action.DiscreteActionDependent;
+import action.DiscreteActionInterface;
+import action.DiscreteActionOnOffDependent;
+import timer.OneShotTimer;
+
+
+<span class="fc" id="L16">class DiscreteActionSimulatorTest {</span>
+	
+	@Test
+	void testSetNbLoop() {
+<span class="fc" id="L20">		DiscreteActionSimulator das = new DiscreteActionSimulator();</span>
+<span class="fc" id="L21">		das.setNbLoop(4);</span>
+<span class="fc" id="L22">		assertEquals(das.getNbLoop(), 4);</span>
+<span class="fc" id="L23">		assertEquals(das.getStep(), 1);</span>
+<span class="fc" id="L24">	}</span>
+	
+	@Test
+	void testSetNbLoopNegative() {
+<span class="fc" id="L28">		DiscreteActionSimulator das = new DiscreteActionSimulator();</span>
+<span class="fc" id="L29">		das.setNbLoop(-3);</span>
+<span class="fc" id="L30">		assertEquals(das.getNbLoop(), 0);</span>
+<span class="fc" id="L31">		assertEquals(das.getStep(), -1);</span>
+<span class="fc" id="L32">	}</span>
+	
+	@Test
+	void testAddAction() {
+		// Dependent
+<span class="fc" id="L37">		DiscreteActionSimulator das = new DiscreteActionSimulator();</span>
+<span class="fc" id="L38">		OneShotTimer oneShotTimer = new OneShotTimer(5);</span>
+<span class="fc" id="L39">		DiscreteActionInterface dad = new DiscreteActionDependent(new Object(), null, oneShotTimer);</span>
+		
+		// On Off 
+<span class="fc" id="L42">		OneShotTimer oneShotTimerON = new OneShotTimer(1);</span>
+<span class="fc" id="L43">	    OneShotTimer oneShotTimerOFF = new OneShotTimer(5);</span>
+<span class="fc" id="L44">	    DiscreteActionInterface daood = new DiscreteActionOnOffDependent(new Object(),null,oneShotTimerON,null,oneShotTimerOFF);</span>
+
+		// Add actions
+<span class="fc" id="L47">		das.addAction(dad);</span>
+<span class="fc" id="L48">		das.addAction(daood);</span>
+		
+		// Check adds
+<span class="fc" id="L51">		assertTrue(das.getActionsList().contains(dad));</span>
+<span class="fc" id="L52">		assertTrue(das.getActionsList().contains(daood));</span>
+		
+		// Check sort
+<span class="fc" id="L55">		Vector&lt;DiscreteActionInterface&gt; copy = das.getActionsList();</span>
+<span class="fc" id="L56">		Collections.sort(copy);</span>
+<span class="fc" id="L57">		assertEquals(das.getActionsList(),copy);</span>
+<span class="fc" id="L58">	}</span>
+	
+	@Test
+	void testStart() {
+		// Dependent
+<span class="fc" id="L63">		DiscreteActionSimulator das = new DiscreteActionSimulator();</span>
+<span class="fc" id="L64">		OneShotTimer oneShotTimer = new OneShotTimer(5);</span>
+<span class="fc" id="L65">		DiscreteActionInterface dad = new DiscreteActionDependent(new Object(), &quot;methodTest&quot;, oneShotTimer);</span>
+		
+		// On Off 
+<span class="fc" id="L68">		OneShotTimer oneShotTimerON = new OneShotTimer(1);</span>
+<span class="fc" id="L69">	    OneShotTimer oneShotTimerOFF = new OneShotTimer(5);</span>
+<span class="fc" id="L70">	    DiscreteActionInterface daood = new DiscreteActionOnOffDependent(new Object(),&quot;methodTest&quot;,oneShotTimerON,&quot;methodTest&quot;,oneShotTimerOFF);</span>
+
+		// Add actions
+<span class="fc" id="L73">		das.addAction(dad);</span>
+<span class="fc" id="L74">		das.addAction(daood);</span>
+		
+		// Test the method
+<span class="fc" id="L77">		das.setNbLoop(5);</span>
+<span class="fc" id="L78">		long savedTimeBeforeStart = Clock.getInstance().getTime();</span>
+<span class="fc" id="L79">		das.start();</span>
+		
+		// Check running == true
+<span class="fc" id="L82">		assertTrue(das.getRunning());</span>
+		
+		// Check running == false after stop
+<span class="fc" id="L85">		das.stop();</span>
+<span class="fc" id="L86">		assertFalse(das.getRunning());</span>
+		
+		// Check toString
+<span class="fc" id="L89">		assertNotNull(das.toString());</span>
+		
+		// Check time changed
+<span class="fc" id="L92">		assertNotEquals(Clock.getInstance().getTime(),savedTimeBeforeStart);</span>
+		
+		// Check empty list after start method ended
+<span class="nc" id="L95">		assertTrue(das.getActionsList().isEmpty());</span>
+		
+		// Check
+<span class="nc" id="L98">		System.out.println(&quot;+++++++++++++++++++++++++++++++++++&quot;);</span>
+<span class="nc" id="L99">		System.out.println(Clock.getInstance().getTime());</span>
+<span class="nc" id="L100">	}</span>
+	
+	@Test
+	void testStartEmptyList() {
+<span class="fc" id="L104">		DiscreteActionSimulator das = new DiscreteActionSimulator();</span>
+		
+		// We check that an exception is thrown if the list is empty
+<span class="nc" id="L107">		assertThrows(Exception.class, () -&gt; {</span>
+<span class="fc" id="L108">			das.start();</span>
+<span class="fc" id="L109">		});</span>
+<span class="nc" id="L110">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

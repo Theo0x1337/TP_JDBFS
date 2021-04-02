@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>OneShotTimerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">OneShotTimerTest.java</span></div><h1>OneShotTimerTest.java</h1><pre class="source lang-java linenums">package timer;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+<span class="fc" id="L7">class OneShotTimerTest {</span>
+
+	@Test
+	void testOneShotTimer() {
+<span class="fc" id="L11">		int at = 5;</span>
+<span class="fc" id="L12">		OneShotTimer ost = new OneShotTimer(at);</span>
+<span class="fc" id="L13">		assertNotNull(ost);</span>
+<span class="fc" id="L14">		assertEquals(at, ost.getAt());</span>
+		
+<span class="fc" id="L16">	}</span>
+
+	@Test
+	void testHasNext() {
+<span class="fc" id="L20">		int at = 2;</span>
+<span class="fc" id="L21">		OneShotTimer ost = new OneShotTimer(at);</span>
+<span class="fc" id="L22">		assertTrue(ost.hasNext());</span>
+<span class="fc" id="L23">	}</span>
+
+	@Test
+	void testNext() {
+<span class="fc" id="L27">		int at = 4;</span>
+<span class="fc" id="L28">		OneShotTimer ost = new OneShotTimer(at);</span>
+<span class="fc" id="L29">		int expected = 4;</span>
+<span class="fc" id="L30">		assertEquals(expected, ost.next());</span>
+<span class="fc" id="L31">		assertFalse(ost.hasNext());</span>
+<span class="fc" id="L32">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

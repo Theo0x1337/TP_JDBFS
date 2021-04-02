@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Clock.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">discreteBehaviorSimulator</a> &gt; <span class="el_source">Clock.java</span></div><h1>Clock.java</h1><pre class="source lang-java linenums">package discreteBehaviorSimulator;
+
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+/** 
+ * The Clock class is a virtual clock which accumulates  
+ * the laps time of all simulated actions.
+ * Each time an action is run, the global time is incremented
+ * @version 0.4
+ */
+public class Clock {
+<span class="fc" id="L16">	private static Clock instance = null; // No active instance of Clock at start</span>
+	
+	private int time; // Total time incremented each time an action is run
+	private int nextJump; // The time until the next action is run 
+	private ReentrantReadWriteLock lock; // able or not to read and write
+	private boolean virtual;
+	
+	
+	private Set&lt;ClockObserver&gt; observers; // list of the listeners
+	
+	/*
+	 * Constructor
+	 * No parameters
+	 */
+<span class="fc" id="L30">	private Clock() {</span>
+<span class="fc" id="L31">		this.time = 0;</span>
+<span class="fc" id="L32">		this.nextJump=0; </span>
+<span class="fc" id="L33">		this.lock = new ReentrantReadWriteLock();</span>
+<span class="fc" id="L34">		this.virtual = true;</span>
+<span class="fc" id="L35">		this.observers = new HashSet&lt;ClockObserver&gt;();</span>
+<span class="fc" id="L36">	}</span>
+	
+	/**
+	 * Creates a new instance of the Clock class
+	 * only if 
+	 * @return the Clock instance
+	 */
+	public static Clock getInstance() {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">		if (Clock.instance == null) {</span>
+<span class="fc" id="L45">			Clock.instance = new Clock();</span>
+		}
+<span class="fc" id="L47">		return Clock.instance;</span>
+	}
+	
+	/**
+	 * Adds a listener
+	 * @param o listener = instance of ClockObserver
+	 */
+	public void addObserver(ClockObserver o) {
+<span class="fc" id="L55">		this.observers.add(o);</span>
+<span class="fc" id="L56">	}</span>
+	
+	/**
+	 * Removes a listener
+	 * @param o listener = instance of ClockObserver
+	 */
+	public void removeObserver(ClockObserver o) {
+<span class="fc" id="L63">		this.observers.remove(o);</span>
+<span class="fc" id="L64">	}</span>
+	
+	public Set&lt;ClockObserver&gt; getObservers() {
+<span class="fc" id="L67">		return observers;</span>
+	}
+
+	public int getNextJump() {
+<span class="fc" id="L71">		return nextJump;</span>
+	}
+
+	/**
+	 * Sets the clock virtual or not
+	 * @param virtual true or false
+	 */
+	public void setVirtual(boolean virtual) {
+<span class="fc" id="L79">		this.virtual = virtual;</span>
+<span class="fc" id="L80">	}</span>
+	
+	/**
+	 * checks if clock is virtual
+	 * @return true or false
+	 */
+	public boolean isVirtual() {
+<span class="fc" id="L87">		return this.virtual;</span>
+	}
+	
+	/**
+	 * Updates the next jump time.
+	 * @param nextJump
+	 */
+	public void setNextJump(int nextJump) {
+<span class="fc" id="L95">		this.nextJump = nextJump;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		for(ClockObserver o:this.observers) {</span>
+<span class="fc" id="L97">			o.nextClockChange(this.nextJump);</span>
+		}		
+<span class="fc" id="L99">	}</span>
+	/*public void setTime(int time) throws IllegalAccessException {
+		this.lock.lock();
+		if (this.time &lt; time) {
+			this.time = time;
+			for(ClockObserver o:this.observers) {
+				o.ClockChange();
+			}
+		}else{
+			this.lock.unlock();
+			throw new IllegalAccessException(&quot;Set time error, cannot go back to the past !!!&quot;);
+		}
+		this.lock.unlock();
+	}*/
+	
+	/**
+	 * Increases the global time.
+	 * @param time
+	 * @throws Exception if the new jump is different to 
+	 * the new time to be increased
+	 */
+	public void increase(int time) throws Exception {
+
+<span class="fc" id="L122">		this.lockWriteAccess();</span>
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">		if(time != this.nextJump) {</span>
+<span class="fc" id="L125">			throw new Exception(&quot;Unexpected time change&quot;);</span>
+		}
+<span class="fc" id="L127">		this.time += time;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		for(ClockObserver o:this.observers) {</span>
+<span class="fc" id="L129">			o.clockChange(this.time);</span>
+		}
+<span class="fc" id="L131">		this.unlockWriteAccess();</span>
+<span class="fc" id="L132">	}</span>
+	
+	/**
+	 * 
+	 * @return the global time
+	 */
+	public long getTime() {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		if(this.virtual) {</span>
+<span class="fc" id="L140">			return this.time;</span>
+		}else {
+<span class="fc" id="L142">			return new Date().getTime();</span>
+		}
+	}
+	
+	public void setTime(int time) {
+<span class="fc" id="L147">		this.time = time;</span>
+<span class="fc" id="L148">	}</span>
+
+	public void lockReadAccess() {
+<span class="nc" id="L151">		this.lock.readLock().lock();</span>
+<span class="nc" id="L152">	}</span>
+	
+	public void unlockReadAccess() {
+<span class="nc" id="L155">		this.lock.readLock().unlock();</span>
+<span class="nc" id="L156">	}</span>
+	
+	public void lockWriteAccess() {
+<span class="fc" id="L159">		this.lock.writeLock().lock();</span>
+<span class="fc" id="L160">	}</span>
+	public void unlockWriteAccess() {
+<span class="fc" id="L162">		this.lock.writeLock().unlock();		</span>
+<span class="fc" id="L163">	}</span>
+	/**
+	 * @return the global time
+	 */
+	public String toString() {
+<span class="fc" id="L168">		return &quot;&quot;+this.time;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>

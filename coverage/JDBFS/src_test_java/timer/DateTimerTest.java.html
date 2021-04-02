@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DateTimerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">JDBFS (2 avr. 2021 22:53:45)</a> &gt; <a href="../../index.html" class="el_group">JDBFS</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">timer</a> &gt; <span class="el_source">DateTimerTest.java</span></div><h1>DateTimerTest.java</h1><pre class="source lang-java linenums">package timer;
+
+
+
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.Vector;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+<span class="fc" id="L17">class DateTimerTest {</span>
+
+	private Vector&lt;Integer&gt; vecteur;
+	private DateTimer datetimer;
+	private TreeSet&lt;Integer&gt; dates;
+
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L25">			vecteur = new Vector&lt;Integer&gt;(1);</span>
+			     
+<span class="fc" id="L27">	        dates = new TreeSet&lt;Integer&gt;();</span>
+<span class="fc" id="L28">	        dates.add(10);</span>
+<span class="fc" id="L29">	        dates.add(20);</span>
+<span class="fc" id="L30">	        dates.add(30);</span>
+	        
+	        
+	        
+	        
+<span class="fc" id="L35">	}</span>
+
+	@Test
+	void testDateTimerV() {
+<span class="fc" id="L39">		datetimer = new DateTimer(vecteur);</span>
+<span class="fc" id="L40">		assertTrue(datetimer.lapsTimes.equals(vecteur));</span>
+<span class="fc" id="L41">		assertNotNull(datetimer.it);</span>
+		
+<span class="fc" id="L43">	}</span>
+	@Test
+	void testDateTimerT() {
+<span class="fc" id="L46">		datetimer = new DateTimer(dates);</span>
+<span class="fc" id="L47">		assertTrue(datetimer.lapsTimes.firstElement().equals(10));</span>
+<span class="fc" id="L48">		assertNotNull(datetimer.it);</span>
+
+<span class="fc" id="L50">	}</span>
+	
+	
+	@Test
+	void testHasNext() {
+<span class="fc" id="L55">		datetimer = new DateTimer(vecteur);</span>
+<span class="fc" id="L56">		assertFalse(datetimer.it.hasNext());</span>
+<span class="fc" id="L57">		vecteur.add(1);</span>
+<span class="fc" id="L58">		datetimer = new DateTimer(vecteur);</span>
+<span class="fc" id="L59">		assertTrue(datetimer.it.hasNext());</span>
+<span class="fc" id="L60">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>JDBFS (2 avr. 2021 22:53:45)</div></body></html>
