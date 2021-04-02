@@ -43,9 +43,9 @@ public class RandomTimer implements Timer {
 	}	
 	
 	/**
-	 * Permet d'obtenir le nom de la loi de distribution stockee dans l'attribut distribution
+	 * Get the name of the distribution law stored in the distribution attribute
 	 * @param distribution
-	 * @return une chaine de caractere correspondant au nom de la loi de distribution du timer
+	 * @return a string corresponding to the name of the distribution law of the timer
 	 */
 	public static String distribution2String(randomDistribution distribution){
 		return distribution.name();
